@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu May 23 12:37:24 2019
-
 @author: 30033237
 """
 import numpy as np
@@ -63,24 +61,6 @@ def generate_degree_sequences(n, sum, scale):
 
     return vars
 
-def generate_sequence_add(sum, n):  
-    """Returns a random sequence with 'n' nodes and total degree 'sum'.
-
-       Not good.
-    """
-    min_d = 1
-    max_d = n - 1
-    array = [min_d] * n
-
-    diff = sum - min_d * n
-    while diff > 0:
-        a = np.random.randint(0, n - 1)
-        if array[a] >= max_d:
-            continue
-        array[a] += 1
-        diff -= 1
-    return array
-    
 vars=generate_degree_sequences(100,2000,100)
 #vars=generate_variance_sequences(30,120,15)
 vars.sort()
