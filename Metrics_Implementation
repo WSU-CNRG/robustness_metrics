@@ -1,0 +1,95 @@
+# -*- coding: utf-8 -*-
+"""
+@author: Balume Mburano
+"""
+
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy.linalg as np
+import numpy as np1
+
+from networkx.algorithms import tree
+import R_metric
+try:
+    reload
+    
+except NameError:
+    try:
+        from importlib import reload  
+    except ImportError:
+        from imp import reload 
+        
+
+def display_graph(G):
+    nx.draw(G)
+    plt.show() 
+    
+    
+def natural_connectivity(G):
+    L=nx.laplacian_matrix(G)
+    E_tot=sum(np.eigvals(L.A))
+    E_av=E_tot/len(np.eigvals(L.A))
+    print('Natural Connectivity Value Is: ',E_av)
+    #print('The EigenValues is :',np.eigvals(L.A))
+    
+    
+def algebraic_connectivity(G):
+    L=nx.laplacian_matrix(G)
+    A_all=sorted(np.eigvals(L.A))
+    #print('Natural Connectivity Value Is: ',A_all) 
+    av_c=A_all[1]
+    print('Algrebraic Connectivity Value Is: ',av_c) 
+    
+
+def num_of_spanning_tree(G):
+	"""
+    Kruskal's algorithm for maximum spanning trees
+    Return the maximum spanning tree of an undirected graph G.
+    
+    """
+    mst=tree.maximum_spanning_edges(G, algorithm='kruskal',weight='weight',data=False)
+    edgelist=list(mst)
+    a=np1.array(sorted(edgelist))
+    n=a.max(axis=0)[0]
+    j=0
+    for i in range(0,n):
+        b=a[np1.where((a[:,0]==i))[0]]
+    
+        if np1.size(b)>0 and np1.size(b)==0:
+            i+=1
+        elif np1.size(b)>0:
+            j+=1
+    print('The number of Spanning tree is : ',j) 
+    
+    
+def main():
+    try:
+       
+        graphs=input('Enter the number of graphs : ')
+        i=0
+        while i in range(int(graphs)):
+            ''' reload R_metric'''
+            reload(R_metric)
+            '''Create graph'''
+            G=nx.gnm_random_graph(100,400)
+            #G=nx.random_regular_graph(5,20,seed=None)
+           #G=nx.barabasi_albert_graph(100,50)
+            '''display graphs'''            
+            display_graph(G)
+            '''call  class that return the Natural connectivity mmetric'''
+            natural_connectivity(G)
+            '''call  class that return the Algebraic connectivity mmetric'''
+            algebraic_connectivity(G)
+            '''call  class that return the Number of Spanning Tree mmetric'''
+            num_of_spanning_tree(G)
+           
+            '''call  class that return the mertic R with node degree as the node importance measure''' 
+            R_metric.metric_r_degree(G)
+            i+=1 
+                             
+    except Exception as e:
+        print(str(e))
+        pass
+main()
+
+    
